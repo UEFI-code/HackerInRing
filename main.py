@@ -20,11 +20,10 @@ class myVM:
             'humanloop': [9],
         }
         self.mem = mem
-        self.ret_addr = 0
+        self.ret_addrs = [0] * 128
         self.syscall_table = [0] * 128
         self.pc = 0
-        self.sp = 0
-        self.bp = 0
+        self.supareg = [0] * 128
     
     def crash_handler(self):
         print('Oh my Emperor! The palace is collapsing!\nSave the empire!')
@@ -61,7 +60,7 @@ class myVM:
                             self.crash_handler()
                         print(f'Memory value at {addr}: {self.mem[addr]}')
                     elif cmd_type == 4:
-                        self.pc = self.ret_addr
+                        self.pc = self.ret_addrs.pop()
                         if self.pc < 0 or self.pc >= len(self.mem):
                             print('Code Pointer out of range!')
                             self.crash_handler()
@@ -70,6 +69,7 @@ class myVM:
                     self.pc += 1
                 else:
                     print('Unknown command: ' + preprocess_cmd[0])
+                    self.crash_handler()
             print('Code Pointer out of range!')
             self.crash_handler()
         except Exception as e:
@@ -114,7 +114,7 @@ class myVM:
                             continue
                         print(f'Memory value at {addr}: {self.mem[addr]}')
                     elif cmd_type == 4:
-                        self.pc = self.ret_addr
+                        self.pc = self.ret_addrs.pop()
                         if self.pc < 0 or self.pc >= len(self.mem):
                             print('Invalid address')
                             self.pc = 0

@@ -90,11 +90,9 @@ class myVM:
                         self.pc = int(preprocessed_cmd[1])
                         if self.pc < 0 or self.pc >= len(self.mem):
                             print('Invalid address')
-                            self.pc = 0
                             continue
                         sure = input(f'Are you sure you want to jump to {self.pc}? (y/n): ')
                         if sure == 'n':
-                            self.pc = 0
                             print('You are so cowardly!!!')
                             continue
                         print('Jumping to ' + str(self.pc))
@@ -117,11 +115,9 @@ class myVM:
                         self.pc = self.ret_addrs.pop()
                         if self.pc < 0 or self.pc >= len(self.mem):
                             print('Invalid address')
-                            self.pc = 0
                             continue
                         sure = input(f'Are you sure you want to return to {self.pc}? (y/n): ')
                         if sure == 'n':
-                            self.pc = 0
                             print('You are so cowardly!!!')
                             continue
                         print('Returning to ' + str(self.pc))

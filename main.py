@@ -176,7 +176,6 @@ class myVM:
                         self.run_cmd()
                     elif cmd_type == 9:
                         print('Stupid human, you cannot run humanloop in humanloop!')
-                        continue
                 else:
                     print('Unknown command: ' + preprocessed_cmd[0])
         except Exception as e:

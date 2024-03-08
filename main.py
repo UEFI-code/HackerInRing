@@ -47,12 +47,12 @@ class myVM:
                         continue
                     elif cmd_type == 2:
                         addr = int(preprocess_cmd[1])
-                        val = int(preprocess_cmd[2])
+                        val = ' '.join(preprocess_cmd[2:])
                         if addr < 0 or addr >= len(self.mem):
                             print('Memory address out of range!')
                             self.crash_handler()
                         self.mem[addr] = val
-                        print('Writing ' + str(val) + ' to ' + str(addr))
+                        print('Writing ' + str(val) + ' to addr ' + str(addr))
                     elif cmd_type == 3:
                         addr = int(preprocess_cmd[1])
                         if addr < 0 or addr >= len(self.mem):
@@ -99,12 +99,12 @@ class myVM:
                         self.run_cmd()
                     elif cmd_type == 2:
                         addr = int(preprocessed_cmd[1])
-                        val = int(preprocessed_cmd[2])
+                        val = ' '.join(preprocessed_cmd[2:])
                         if addr < 0 or addr >= len(self.mem):
                             print('Invalid address')
                             continue
                         self.mem[addr] = val
-                        print('Writing ' + str(val) + ' to ' + str(addr))
+                        print('Writing ' + str(val) + ' to addr ' + str(addr))
                     elif cmd_type == 3:
                         addr = int(preprocessed_cmd[1])
                         if addr < 0 or addr >= len(self.mem):

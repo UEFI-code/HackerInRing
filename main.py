@@ -66,6 +66,30 @@ class myVM:
                             self.crash_handler()
                         print('Returning to ' + str(self.pc))
                         continue
+                    elif cmd_type == 5:
+                        syscall_num = int(preprocess_cmd[1])
+                        if syscall_num < 0 or syscall_num >= len(self.syscall_table):
+                            print('Invalid syscall number!')
+                            self.crash_handler()
+                        callpc = self.syscall_table[syscall_num]
+                        if callpc < 0 or callpc >= len(self.mem):
+                            print('Code Pointer out of range!')
+                            self.crash_handler()
+                        self.ret_addrs.append(self.pc + 1)
+                        self.pc = callpc
+                        print('Entering syscall ' + str(syscall_num) + ' at ' + str(self.pc))
+                        continue
+                    elif cmd_type == 6:
+                        addr = int(preprocess_cmd[1])
+                        if addr < 0 or addr >= len(self.mem):
+                            print('Code Pointer out of range!')
+                            self.crash_handler()
+                        self.ret_addrs.append(self.pc + 1)
+                        self.pc = addr
+                        print('Calling ' + str(addr))
+                        continue
+                    elif cmd_type == 9:
+                        self.run_cmd_humanloop()
                     self.pc += 1
                 else:
                     print('Unknown command: ' + preprocess_cmd[0])
@@ -122,6 +146,37 @@ class myVM:
                             continue
                         print('Returning to ' + str(self.pc))
                         self.run_cmd()
+                    elif cmd_type == 5:
+                        syscall_num = int(preprocessed_cmd[1])
+                        if syscall_num < 0 or syscall_num >= len(self.syscall_table):
+                            print('Invalid syscall number!')
+                            continue
+                        callpc = self.syscall_table[syscall_num]
+                        if callpc < 0 or callpc >= len(self.mem):
+                            print('Invalid address')
+                            continue
+                        sure = input(f'Are you sure you want to enter syscall {syscall_num} at {callpc}? (y/n): ')
+                        if sure == 'n':
+                            print('You are so cowardly!!!')
+                            continue
+                        self.pc = callpc
+                        print('Entering syscall ' + str(syscall_num) + ' at ' + str(self.pc))
+                        self.run_cmd()
+                    elif cmd_type == 6:
+                        addr = int(preprocessed_cmd[1])
+                        if addr < 0 or addr >= len(self.mem):
+                            print('Invalid address')
+                            continue
+                        sure = input(f'Are you sure you want to call {addr}? (y/n): ')
+                        if sure == 'n':
+                            print('You are so cowardly!!!')
+                            continue
+                        self.pc = addr
+                        print('Calling ' + str(addr))
+                        self.run_cmd()
+                    elif cmd_type == 9:
+                        print('Stupid human, you cannot run humanloop in humanloop!')
+                        continue
                 else:
                     print('Unknown command: ' + preprocessed_cmd[0])
         except Exception as e:

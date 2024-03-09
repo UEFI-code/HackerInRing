@@ -1,4 +1,6 @@
 from typing import Any
+import traceback
+import time
 
 class myVM:
     def __init__(self, mem):
@@ -7,17 +9,18 @@ class myVM:
             'printpc': [0, 'print(self.pc)'],
             'printretaddr': [0, 'print(self.ret_addr)'],
             'printmemsize': [0, 'print(len(self.mem))'],
+            'printbacktrace': [0, "print(''.join(traceback.format_stack()))"],
             'nop': [0, 'pass'],
-            'sleep': [0, 'import time\ntime.sleep(1)'],
+            'sleep': [0, 'time.sleep(1)'],
             'jmp': [1],
             'writemem': [2],
             'readmem': [3],
             'ret': [4],
             'sysenter': [5],
             'call': [6],
-            'getmember': [7],
-            'kill': [8],
-            'humanloop': [9],
+            'humanloop': [7],
+            'getmember': [8],
+            'kill': [9],
         }
         self.mem = mem
         self.ret_addrs = [0] * 128
@@ -88,7 +91,7 @@ class myVM:
                         self.pc = addr
                         print('Calling ' + str(addr))
                         continue
-                    elif cmd_type == 9:
+                    elif cmd_type == 7:
                         self.run_cmd_humanloop()
                     self.pc += 1
                 else:
@@ -174,7 +177,7 @@ class myVM:
                         self.pc = addr
                         print('Calling ' + str(addr))
                         self.run_cmd()
-                    elif cmd_type == 9:
+                    elif cmd_type == 7:
                         print('Stupid human, you cannot run humanloop in humanloop!')
                 else:
                     print('Unknown command: ' + preprocessed_cmd[0])
